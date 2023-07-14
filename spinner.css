@@ -1,18 +1,7 @@
-/* styles related to buttons for triggering animations */
-.buttons {
-  display: flex;
-  justify-content: center;
-}
-
-.buttons button ~ * {
-  margin-left: 1rem;
-}
-
-/* css variables */
+/* css variables to configure loaders and animation times */
 :root {
   /* loader size and styling */
   --diameter: 50px;
-  --radius: calc(var(--diameter) / 2);
   --line-width: 5px;
   --fill-color: green;
   --empty-color: lightgrey;
@@ -26,9 +15,22 @@
   /* configure animation speeds */
   --spinner-speed: 0.6s;
   --clockwise-animation-speed: 0.2s;
-  --clockwise-animation-completed: calc(var(--clockwise-animation-speed) * 2);
   --circle-fill-speed: 0.2s;
   --checkmark-animation-speed: 0.5s;
+  
+  /* pre-calculated variables */
+  --radius: calc(var(--diameter) / 2);
+  --clockwise-animation-completed: calc(var(--clockwise-animation-speed) * 2);
+}
+
+/* styles related to buttons for triggering animations */
+.buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.buttons button ~ * {
+  margin-left: 1rem;
 }
 
 #circle {
