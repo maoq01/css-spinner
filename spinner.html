@@ -1,38 +1,27 @@
+
+
 <!-- button for re-running animation -->
 <div class="buttons">
-  <button id="btn-reset" type="button">
-    Reset
+  <button id="btn-loading" type="button">
+    Loading...
+  </button>
+  <button id="btn-complete" type="button">
+    Complete!
   </button>
 </div>
 
 <div id="circle">
-  <div class='hold left'>
-    <div class='fill'></div>
+  <div id="spinner" class="spinner"></div>
+  <div class="hold left">
+    <div class="fill"></div>
   </div>
-  <div class='hold right'>
-    <div class='fill'></div>
+  <div class="hold right">
+    <div class="fill"></div>
   </div>
   <div id="check-wrapper" class="check-wrapper">
-    <div class='outer'>
-      <div id="inner" class='inner'></div>
+    <div class="edge">
+      <div id="fill-circle" class="fill-circle"></div>
     </div>
     <div id="checkmark" class="checkmark"></div>
   </div>
-</div>
-
-<div id="circle2">
-  <div class='hold left'>
-    <div class='fill'></div>
-  </div>
-  <div class='hold right'>
-    <div class='fill'></div>
-  </div>
-<!--   <div class="reverse">
-    <div class='hold left'>
-      <div class='fill'></div>
-    </div>
-    <div class='hold right'>
-      <div class='fill'></div>
-    </div>
-  </div> -->
 </div>
