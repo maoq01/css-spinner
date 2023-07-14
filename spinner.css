@@ -1,12 +1,47 @@
-/* Related to JS-and re-running animations on reset */
+/* styles related to buttons for triggering animations */
 .buttons {
   display: flex;
   justify-content: center;
 }
 
+.buttons button ~ * {
+  margin-left: 1rem;
+}
+
+/* css variables */
 :root {
   --radius: 25px;
   --diameter: 50px;
+  --spinner-speed: 0.6s;
+  --clockwise-fill-speed: 0.2s;
+  --circle-fill-speed: 0.2s;
+  --checkmark-animation-speed: 0.4s;
+}
+
+/* loading spinner styling */
+.spinner::before {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  width: var(--diameter);
+  height: var(--diameter);
+  margin-top: -var(--radius);
+  margin-left: -var(--radius);
+  border-radius: 50%;
+  border: 5px solid lightgrey;
+  border-top-color: green;
+  animation: spinner var(--spinner-speed) linear infinite;
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+   }
+}
+
+/* hides all other sibling elements when spinner is active */
+.spinner ~ * {
+  display: none;
 }
 
 #circle {
@@ -16,64 +51,7 @@
   position: relative;
 }
 
-#circle2 {
-  width: var(--diameter);
-  height: var(--diameter);
-  margin: 30px auto;
-  position: relative;
-}
-
-#circle2 .left .fill {
-  animation: clockwise 1s both linear alternate;
-}
-
-#circle2 .right .fill {
-  z-index: 3;
-  animation: clockwise 1s both linear alternate;
-  animation-delay: 1s;
-}
-
-.reverse {
-  border-radius: 50%;
-  width: var(--diameter);
-  height: var(--diameter);
-  margin: 30px auto;
-  position: relative;
-  animation: show both;
-  opacity: 0;
-  animation-delay: 2s;
-}
-
-.reverse .hold {
-  background-color: lightgrey;
-}
-
-.reverse .fill {
-  background-color: green;
-}
-
-#circle2 .reverse .left .fill {
-  animation: clockwise 1s both linear alternate;
-  animation-delay: 2s;
-}
-
-#circle2 .reverse .right .fill {
-  z-index: 3;
-  animation: clockwise 1s both linear alternate;
-  animation-delay: 3s;
-}
-
-@keyframes show {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-    z-index: 4;
-  }
-}
-
+/* styling for the "clockwise filling circle" animation */
 .hold {
   position: absolute;
   width: 100%;
@@ -84,7 +62,7 @@
   -webkit-mask: radial-gradient(20px, #0000 98%, #000);
 }
 
-.fill {
+.hold .fill {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -93,13 +71,9 @@
   clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
 }
 
-.left .fill,
-.right .fill {
-  animation: clockwise 0.2s linear both;
-}
-
 .left .fill {
   z-index: 1;
+  animation: clockwise var(--clockwise-fill-speed) linear both;
 }
 
 .right {
@@ -108,7 +82,10 @@
 
 .right .fill {
   z-index: 3;
-  animation-delay: 0.2s;
+  animation: clockwise var(--clockwise-fill-speed) linear both;
+  
+  /* wait for left-half animation to complete before starting right-half animation */
+  animation-delay: var(--clockwise-fill-speed);
 }
 
 @keyframes clockwise {
@@ -120,63 +97,19 @@
   }
 }
 
-.outer {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: green;
-  clip-path: circle(50% at 50% 50%);
-}
-
-.inner {
-  position: absolute;
-  width: 80%;
-  height: 80%;
-  margin-left: 10%;
-  margin-top: 10%;
-  border-radius: 100%;
-  background-color: white;
-  animation: fill 0.2s linear both;
-  animation-delay: 0.4s;
-}
-
-@keyframes fill {
-  to {
-    width: 10%;
-    height: 10%;
-    margin-left: 45%;
-    margin-top: 45%;
-  }
-}
-
-@keyframes fill {
-  from {
-    width: 79%;
-    height: 80%;
-    margin-left: 10%;
-    margin-top: 10%;
-  }
-
-  to {
-    width: 0%;
-    height: 0%;
-    margin-left: 50%;
-    margin-top: 50%;
-  }
-}
-
+/* styling for the checkmark animation */
 .check-wrapper {
   border-radius: 50%;
   width: var(--diameter);
   height: var(--diameter);
   margin: 30px auto;
   position: relative;
-  animation: pop both;
+  animation: display both;
   opacity: 0;
-  animation-delay: 0.4s;
+  animation-delay: calc(var(--clockwise-fill-speed) * 2);
 }
 
-@keyframes pop {
+@keyframes display {
   from {
     opacity: 0;
   }
@@ -187,7 +120,7 @@
   }
 }
 
-.checkmark {
+.check-wrapper .checkmark {
   position: absolute;
   transform: rotate(45deg);
   height: 2%;
@@ -196,11 +129,11 @@
   border-right: 5px solid white;
   border-bottom: 5px solid white;
   border-width: 1%;
-  animation: grow 0.5s ease-in both;
-  animation-delay: 0.4s;
+  animation: growBounce var(--checkmark-animation-speed) ease-in both;
+  animation-delay: calc(var(--clockwise-fill-speed) * 2);
 }
 
-@keyframes grow {
+@keyframes growBounce {
   from {
     height: 2%;
     width: 1%;
@@ -221,5 +154,43 @@
     width: 10px;
     margin: 20% 35%;
     border-width: 100%;
+  }
+}
+
+/* styling for the "fill-in circle" animation */
+.check-wrapper .edge {
+  position: absolute;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  background-color: green;
+  clip-path: circle(50% at 50% 50%);
+}
+
+.check-wrapper .fill-circle {
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  margin-left: 10%;
+  margin-top: 10%;
+  border-radius: 100%;
+  background-color: white;
+  animation: fill-circle var(--circle-fill-speed) linear both;
+  animation-delay: calc(var(--clockwise-fill-speed) * 2);
+}
+
+@keyframes fill-circle {
+  from {
+    width: 79%;
+    height: 80%;
+    margin-left: 10%;
+    margin-top: 10%;
+  }
+
+  to {
+    width: 0%;
+    height: 0%;
+    margin-left: 50%;
+    margin-top: 50%;
   }
 }
