@@ -6,7 +6,7 @@ Consists of three parts:
 - two half-circle animations for a clockwise fill of the circle
 - a circle that is filled from the outer edge and a checkmark that appears in the middle
 
-https://jsfiddle.net/h9bc7jeo/801
+https://jsfiddle.net/j0e3yxf6/2
 
 ## Sources
 Loading circle animation:
