@@ -10,12 +10,34 @@
 
 /* css variables */
 :root {
-  --radius: 25px;
+  /* loader size and styling */
   --diameter: 50px;
+  --radius: calc(var(--diameter) / 2);
+  --line-width: 5px;
+  --fill-color: green;
+  --empty-color: lightgrey;
+
+  /* checkmark size and styling */
+  --checkmark-width: 10px;
+  --checkmark-height: 20px;
+  --checkmark-line-width: 5px;
+  --checkmark-color: white;
+ 
+  /* configure animation speeds */
   --spinner-speed: 0.6s;
-  --clockwise-fill-speed: 0.2s;
+  --clockwise-animation-speed: 0.2s;
+  --clockwise-animation-completed: calc(var(--clockwise-animation-speed) * 2);
   --circle-fill-speed: 0.2s;
-  --checkmark-animation-speed: 0.4s;
+  --checkmark-animation-speed: 0.5s;
+}
+
+#circle {
+  position: relative;
+  width: var(--diameter);
+  height: var(--diameter);
+  
+  /* sets position of spinner */
+  margin: 30px auto;
 }
 
 /* loading spinner styling */
@@ -25,11 +47,9 @@
   position: absolute;
   width: var(--diameter);
   height: var(--diameter);
-  margin-top: -var(--radius);
-  margin-left: -var(--radius);
   border-radius: 50%;
-  border: 5px solid lightgrey;
-  border-top-color: green;
+  border: var(--line-width) solid var(--empty-color);
+  border-top-color: var(--fill-color);
   animation: spinner var(--spinner-speed) linear infinite;
 }
 
@@ -44,22 +64,15 @@
   display: none;
 }
 
-#circle {
-  width: var(--diameter);
-  height: var(--diameter);
-  margin: 30px auto;
-  position: relative;
-}
-
 /* styling for the "clockwise filling circle" animation */
 .hold {
   position: absolute;
   width: 100%;
   height: 100%;
   border-radius: 100%;
-  background-color: green;
+  background-color: var(--fill-color);
   clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
-  -webkit-mask: radial-gradient(20px, #0000 98%, #000);
+  -webkit-mask: radial-gradient(calc(var(--radius) - var(--line-width)), #0000 98%, #000);
 }
 
 .hold .fill {
@@ -67,13 +80,13 @@
   width: 100%;
   height: 100%;
   border-radius: 100%;
-  background-color: lightgrey;
+  background-color: var(--empty-color);
   clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
 }
 
 .left .fill {
   z-index: 1;
-  animation: clockwise var(--clockwise-fill-speed) linear both;
+  animation: clockwise var(--clockwise-animation-speed) linear both;
 }
 
 .right {
@@ -82,10 +95,10 @@
 
 .right .fill {
   z-index: 3;
-  animation: clockwise var(--clockwise-fill-speed) linear both;
+  animation: clockwise var(--clockwise-animation-speed) linear both;
   
   /* wait for left-half animation to complete before starting right-half animation */
-  animation-delay: var(--clockwise-fill-speed);
+  animation-delay: var(--clockwise-animation-speed);
 }
 
 @keyframes clockwise {
@@ -102,11 +115,10 @@
   border-radius: 50%;
   width: var(--diameter);
   height: var(--diameter);
-  margin: 30px auto;
   position: relative;
   animation: display both;
   opacity: 0;
-  animation-delay: calc(var(--clockwise-fill-speed) * 2);
+  animation-delay: var(--clockwise-animation-completed);
 }
 
 @keyframes display {
@@ -126,11 +138,11 @@
   height: 2%;
   width: 1%;
   margin: 45% 45%;
-  border-right: 5px solid white;
-  border-bottom: 5px solid white;
+  border-right: var(--checkmark-line-width) solid var(--checkmark-color);
+  border-bottom: var(--checkmark-line-width) solid var(--checkmark-color);
   border-width: 1%;
   animation: growBounce var(--checkmark-animation-speed) ease-in both;
-  animation-delay: calc(var(--clockwise-fill-speed) * 2);
+  animation-delay: var(--clockwise-animation-completed);
 }
 
 @keyframes growBounce {
@@ -142,16 +154,16 @@
   }
   
   50% {
-    height: calc(20px * 1.2);
-    width: calc(10px * 1.2);
+    height: calc(var(--checkmark-height) * 1.2);
+    width: calc(var(--checkmark-width) * 1.2);
     margin: 20% 35%;
     margin: 13% 33%;
     border-width: 125%;
   }
   
   to {
-    height: 20px;
-    width: 10px;
+    height: var(--checkmark-height);
+    width: var(--checkmark-width);
     margin: 20% 35%;
     border-width: 100%;
   }
@@ -163,7 +175,7 @@
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  background-color: green;
+  background-color: var(--fill-color);
   clip-path: circle(50% at 50% 50%);
 }
 
@@ -174,9 +186,9 @@
   margin-left: 10%;
   margin-top: 10%;
   border-radius: 100%;
-  background-color: white;
-  animation: fill-circle var(--circle-fill-speed) linear both;
-  animation-delay: calc(var(--clockwise-fill-speed) * 2);
+  background-color: var(--checkmark-color);
+  animation: fill-circle var(--circle-fill-speed) ease-in both;
+  animation-delay: var(--clockwise-animation-completed);
 }
 
 @keyframes fill-circle {
