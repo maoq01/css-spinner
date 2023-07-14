@@ -8,12 +8,12 @@ function toggleElementClass(target, klass) {
 
 // handler for "finished loading" button
 function completeListener() {
-	// remove spinner
+  // remove spinner
   const spinnerEl = document.getElementById('spinner');
   spinnerEl.classList.remove('spinner');
 
-	// toggle animation-classes to trigger animation start
-	document.querySelectorAll('.hold > div').forEach((e) => toggleElementClass(e, 'fill'));
+  // toggle animation-classes to trigger animation start
+  document.querySelectorAll('.hold > div').forEach((e) => toggleElementClass(e, 'fill'));
   
   const fillCircleEl = document.getElementById('fill-circle');
   toggleElementClass(fillCircleEl, 'fill-circle');
@@ -27,9 +27,9 @@ function completeListener() {
 
 // handler for "start loading" button
 function loadingListener() {
-	// remove and re-add spinner class to start loading animation,
+  // remove and re-add spinner class to start loading animation,
   // and to hide other elements
-	const spinnerEl = document.getElementById('spinner');
+  const spinnerEl = document.getElementById('spinner');
   toggleElementClass(spinnerEl, 'spinner');
 }
 
