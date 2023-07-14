@@ -1,16 +1,22 @@
-function toggleElementClass(el, klass) {
-	el.classList.remove(klass);
+// removes and re-adds css classes to target element
+function toggleElementClass(target, klass) {
+	target.classList.remove(klass);
   setTimeout(() => {
-    el.classList.add(klass);
-  }, 1)
+    target.classList.add(klass);
+  }, 1);
 }
 
-function resetListener() {
-	// remove and re-add animation-classes on relevant elements
-	document.querySelectorAll('.hold > div').forEach((e => toggleElementClass(e, 'fill')));
+// handler for "finished loading" button
+function completeListener() {
+	// remove spinner
+  const spinnerEl = document.getElementById('spinner');
+  spinnerEl.classList.remove('spinner');
+
+	// toggle animation-classes to trigger animation start
+	document.querySelectorAll('.hold > div').forEach((e) => toggleElementClass(e, 'fill'));
   
-  const innerEl = document.getElementById('inner');
-  toggleElementClass(innerEl, 'inner');
+  const fillCircleEl = document.getElementById('fill-circle');
+  toggleElementClass(fillCircleEl, 'fill-circle');
 
   const wrapperEl = document.getElementById('check-wrapper');
   toggleElementClass(wrapperEl, 'check-wrapper');
@@ -19,4 +25,14 @@ function resetListener() {
   toggleElementClass(checkmarkEl, 'checkmark');
 }
 
-document.getElementById('btn-reset').addEventListener('click', resetListener);
+// handler for "start loading" button
+function loadingListener() {
+	// remove and re-add spinner class to start loading animation,
+  // and to hide other elements
+	const spinnerEl = document.getElementById('spinner');
+  toggleElementClass(spinnerEl, 'spinner');
+}
+
+// button click event listeners
+document.getElementById('btn-complete').addEventListener('click', completeListener);
+document.getElementById('btn-loading').addEventListener('click', loadingListener);
